@@ -1,0 +1,59 @@
+
+{% extends 'base/main.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<header class="bg-primary text-white text-center py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Welcome to Our Virtual Study Group</h1>
+        <p class="lead">Connect with your classmates and collaborate in real-time!</p>
+        <a href="{% url 'discussion' %}" class="btn btn-light btn-lg">Start Discusion </a>
+        <a href="{% url 'index' %}" class="btn btn-light btn-lg">Join a Room</a>
+    </div>
+</header>
+
+{% include 'base/messages.html'%}
+<!-- Testimonials Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">What Students Are Saying</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <p class="card-text">"This platform made it so easy for us to connect and collaborate on projects!"</p>
+                        <footer class="blockquote-footer">Makokotsi Ramathe</footer>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <p class="card-text">"I love the ease of joining rooms and the interactive features!"</p>
+                        <footer class="blockquote-footer">MOSIUOA WESI</footer>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <p class="card-text">"Great user experience! I can focus on my studies without distractions."</p>
+                        <footer class="blockquote-footer">CRISTIANO RONALDO</footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="py-5 text-center">
+    <div class="container">
+        <h2 class="mb-4">Ready to Start Learning?</h2>
+        <a href="{% url 'index' %}" class="btn btn-primary btn-lg">Join a Live Session Now</a>
+    </div>
+</section>
+
+{% endblock %}

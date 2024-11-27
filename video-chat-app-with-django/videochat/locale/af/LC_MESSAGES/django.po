@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: st\n"
+
+msgid "You have %(count)d message."
+msgid_plural "You have %(count)d messages."
+msgstr[0] "U het %(count)d boodskap."
+msgstr[1] "U het %(count)d boodskappe."
+
+msgid "Hello"
+msgstr "Hallo"
+
+msgid "Goodbye"
+msgstr "Totsiens"
+
+msgid "Welcome"
+msgstr "Welkom"
+
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+msgid "Password"
+msgstr "Wagwoord"
+
+msgid "Login"
+msgstr "Teken in"
+
+msgid "Logout"
+msgstr "Teken uit"

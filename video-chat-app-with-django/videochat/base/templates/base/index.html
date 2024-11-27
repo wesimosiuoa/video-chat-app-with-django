@@ -1,0 +1,101 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+    <main class="container my-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6 col-12 text-lg-start text-center mb-4 mb-lg-0">
+                <img src="{% static 'images/Screenshot 2024-10-18 004803.png' %}" alt="Screenshot" class="img-fluid shadow-sm rounded" style="max-width: 100%; height: auto;">
+                <div class="mt-4">
+                    <h2 class="display-5 fw-bold">{% trans "Welcome to Our Live Video Chat" %}</h2>
+                    <p class="lead text-muted">{% trans "Dear groupmate, this is a group video calling portal just for you." %}</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-12">
+                <section id="form-container" class="p-4 bg-light rounded shadow-sm">
+                    <h1>{% trans "Welcome to My Site" %}</h1>
+                    <h2>{% trans "Create a group live video call" %}</h2>
+                    <br>
+                    <form id="form" action="" method="POST" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="text" name="username" class="form-control form-control-lg" style="text-transform: uppercase;" id="username" placeholder="{% trans 'Enter Your Name' %}" value="{{ request.session.username }}" disabled required>
+                            <div class="invalid-feedback">
+                                {% trans "Please enter your name." %}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" name="room" class="form-control form-control-lg" style="text-transform: uppercase;" id="room" placeholder="{% trans 'Enter Room Name' %}" required>
+                            <div class="invalid-feedback">
+                                {% trans "Please enter a room name." %}
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">{% trans "Join Stream" %}</button>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script type="text/javascript">
+        let form = document.getElementById('form')
+
+        let handleSubmit = async (e) => {
+            e.preventDefault()
+
+            let usernameInput = e.target.username
+            let roomInput = e.target.room
+
+            if (usernameInput.value === "") {
+                usernameInput.classList.add('is-invalid')
+                return
+            } else {
+                usernameInput.classList.remove('is-invalid')
+            }
+
+            if (roomInput.value === "") {
+                roomInput.classList.add('is-invalid')
+                return
+            } else {
+                roomInput.classList.remove('is-invalid')
+            }
+
+            let name = usernameInput.value
+            let room = roomInput.value.toUpperCase()
+
+            let response = await fetch(`/get_token/?channel=${room}`)
+            let data = await response.json()
+            let UID = data.uid
+            let token = data.token
+
+            sessionStorage.setItem('UID', UID)
+            sessionStorage.setItem('token', token)
+            sessionStorage.setItem('room', room)
+            sessionStorage.setItem('name', name)
+
+            await fetch('/create_notification/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify({
+                    sender: name,
+                    body: `{% trans "You have a new message from" %} ${name} {% trans "in group chat" %} ${room}`
+                })
+            })
+
+            window.open('/room/', '_self')
+        }
+
+        form.addEventListener('submit', handleSubmit)
+
+        function getCSRFToken() {
+            return document.querySelector('[name=csrfmiddlewaretoken]').value;
+        }
+    </script>
+{% endblock content %}

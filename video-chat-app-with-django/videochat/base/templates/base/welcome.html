@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>CHAT | VIDEO DISCUSSION FOR HIGH SCHOOL STUDENTS </title>
+    <style>
+        .modal-content {
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .modal-header {
+            border-bottom: none;
+        }
+        .modal-footer {
+            border-top: none;
+        }
+    </style>
+</head>
+{% load i18n %}
+<body>
+<!-- Navigation Section -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-comments"></i> Virtusl Study Group
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                </li>
+            </ul>
+            <!-- Language Selection Form -->
+      <div class="dropdown d-inline-block">
+        <button class="btn dropdown-toggle language-select" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-globe"></i> Language
+        </button>
+            <div class="dropdown-menu" aria-labelledby="languageDropdown">
+                <form method="POST" action="{% url 'set_language'%}" class="px-3">
+                    {% csrf_token %}
+                    <button class="dropdown-item" type="submit" name="language" value="en">
+                    <i class="fas fa-language"></i> English
+                    </button>
+                    <button class="dropdown-item" type="submit" name="language" value="st">
+                    <i class="fas fa-language"></i> Southern Sotho
+                    </button>
+                    <button class="dropdown-item" type="submit" name="language" value="af">
+                    <i class="fas fa-language"></i> Afrikaans
+                    </button>
+                    <!-- Add other languages as needed -->
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<header class="bg-primary text-white text-center py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold">
+            <i class="fas fa-video"></i> 
+            <br> Welcome to Our Virtusl Study Group
+        </h1>
+        <p class="lead">
+            <i class="fas fa-users"></i> Connect with your classmates and collaborate in real-time!
+        </p>
+    </div>
+</header>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Why Choose Us?</h2>
+        <div class="row">
+            <!-- Feature 1 -->
+            <div class="col-md-4 text-center">
+                <div class="card shadow-sm">
+                    <i class="fas fa-chalkboard-teacher fa-3x mt-4"></i>
+                    <div class="card-body">
+                        <h5 class="card-title">Interactive Learning</h5>
+                        <p class="card-text">
+                            <i class="fas fa-comments"></i> Engage in discussions and share ideas with your peers through video chats.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Feature 2 -->
+            <div class="col-md-4 text-center">
+                <div class="card shadow-sm">
+                    <i class="fas fa-laptop fa-3x mt-4"></i>
+                    <div class="card-body">
+                        <h5 class="card-title">Easy Access</h5>
+                        <p class="card-text">
+                            <i class="fas fa-globe"></i> Join your sessions anytime, anywhere, with just a click.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Feature 3 -->
+            <div class="col-md-4 text-center">
+                <div class="card shadow-sm">
+                    <i class="fas fa-lock fa-3x mt-4"></i>
+                    <div class="card-body">
+                        <h5 class="card-title">Secure Environment</h5>
+                        <p class="card-text">
+                            <i class="fas fa-shield-alt"></i> Your privacy is our priority; enjoy secure and private discussions.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'base/messages.html'%}
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'login'%}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Email address</label>
+                        <input type="email" name="email" class="form-control" id="loginEmail" aria-describedby="emailHelp">
+                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" id="loginPassword">
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <a href="#" class="btn btn-link">Forgot Password?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Registration Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel">
+                    <i class="fas fa-user-plus"></i> Register
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action=" {% url 'register'%}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="registerName" class="form-label">Full Name</label>
+                        <input type="text" name="registerName" class="form-control" id="registerName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerEmail" class="form-label">Email address</label>
+                        <input type="email" name="registerEmail" class="form-control" id="registerEmail" aria-describedby="emailHelp" required>
+                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerPassword" class="form-label">Password</label>
+                        <input type="password" name="registerPassword" class="form-control" id="registerPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="registerConfirmPassword" class="form-label">Confirm Password</label>
+                        <input type="password" name="registerConfirmPassword" class="form-control" id="registerConfirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

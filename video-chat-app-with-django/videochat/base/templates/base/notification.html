@@ -1,0 +1,17 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block content %}
+<br>
+<div class="container">
+    <h3> Notification </h3>
+
+    {% if notifications %}
+        {% for messages in notifications %}
+            <h6> From {{ messages.sender }} @ {{ messages.created }}</h6>
+            <p> {{ messages.body }}</p>
+        {%endfor%}
+    {%else%}
+        <center> <h6> 0 Notifications </h6></center>
+    {% endif %}
+</div>
+{%endblock%}

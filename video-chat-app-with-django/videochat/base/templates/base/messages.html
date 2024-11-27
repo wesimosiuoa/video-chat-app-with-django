@@ -1,0 +1,62 @@
+
+<style>
+    .messages {
+        list-style-type: none;
+        padding: 0;
+    }
+    .messages li {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .success {
+        background-color: #d4edda; /* Light green */
+        color: #155724; /* Dark green */
+    }
+    .error {
+        background-color: #f8d7da; /* Light red */
+        color: #721c24; /* Dark red */
+    }
+</style>
+{% load i18n %}
+<body>
+
+    {% if messages %}
+        <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <center><h5 class="modal-title" id="messageModalLabel">Status</h5></center>
+                        
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-unstyled">
+                            {% for message in messages %}
+                                <li class="{{ message.tags }}">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"> Please wait ... </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            {% if messages %}
+                $('#messageModal').modal('show');
+
+                // Automatically hide the modal after 5 seconds (4000 milliseconds)
+                setTimeout(function() {
+                    $('#messageModal').modal('hide');
+                }, 5000);
+            {% endif %}
+        });
+    </script>
+
+</body>

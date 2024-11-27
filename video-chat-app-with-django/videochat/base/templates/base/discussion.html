@@ -1,0 +1,193 @@
+{% extends 'base/main.html'%}
+
+{% load static %}
+{% load i18n %}
+{% block content %}
+
+<br><br>
+
+<section class="main--container" style="margin-left:10px;">
+    <div class="chat-container">
+        <!-- Chat Interface Title -->
+        <div class="chat-header">
+            <h2>Welcome, {{ request.session.username }}!</h2>
+            <h4 id="channel">Group: {{ CHANNEL_NAME }}</h4>
+        </div>
+        
+        <!-- Chat Window -->
+        <div class="chat-window">
+            <div id="post_list" class="message-area">
+                <!-- Display posts dynamically -->
+                {% for post in posts %}
+                    <div class="post-wrapper">
+                        <strong>Posted {{ post.created | timesince }} ago by {{ post.sender }}</strong>
+                        <p>{{ post.body }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Recently Submitted Message Display -->
+        <div id="recent-message" class="recent-message">
+            <!-- Placeholder for the most recent message -->
+        </div>
+
+        <!-- Message Input Form -->
+        <div class="chat-form">
+            <form action="" id="post_form" autocomplete="off">
+                <input type="text" name="body" id="body" placeholder="Type your message..." required>
+                <button type="submit" class="send-button">Send</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Agora RTM SDK Script -->
+<script type="text/javascript" src="{% static 'js/agora-rtm-sdk-1.5.1.js' %}"></script>
+
+<!-- Chatbot Functionality -->
+<script type="text/javascript">
+    const APP_ID = "2ed03bea35e2412ead0e6a28344096a7";
+    const token = null;
+    const uid = String(Math.floor(Math.random() * 232));
+    const CHANNEL_NAME = "main";
+
+    let client;
+    let channel;
+    
+    document.getElementById('channel').innerText = `Group: ${CHANNEL_NAME.toUpperCase()}`;
+
+    // Initialize Agora RTM client
+    let initiateRTM = async () => {
+        client = await AgoraRTM.createInstance(APP_ID);
+        await client.login({ uid, token });
+
+        channel = await client.createChannel(CHANNEL_NAME);
+        await channel.join();
+
+        channel.on('ChannelMessage', (message, peerId) => {
+            post = JSON.parse(message.text);
+            console.log('Post:', post);
+            console.log('PeerID:', peerId);
+            addMessageToDOM(post);
+        });
+        console.log("RTM client initiated:", client);
+    };
+
+    initiateRTM();
+
+    // Handle form submission
+    let form = document.getElementById('post_form');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let bodyText = e.target.body.value;
+        console.log('Body text:', bodyText);
+        form.reset();
+        submitData(bodyText);
+    });
+
+    // Submit data to the server and send the message
+    let submitData = async (bodyText) => {
+        let response = await fetch('/add_post/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 'body': bodyText }),
+        });
+        let data = await response.json();
+
+        channel.sendMessage({ text: JSON.stringify(data), type: 'text' });
+        console.log('Data:', data);
+        addMessageToDOM(data);
+    };
+
+    // Add message to DOM
+    let addMessageToDOM = async (message) => {
+        // Add to main chat window
+        let postList = document.getElementById('post_list');
+        let postWrapper = `
+            <div class="post-wrapper">
+                <strong>Posted just now by ${message.sender}</strong>
+                <p>${message.body}</p>
+            </div>
+        `;
+        postList.insertAdjacentHTML('afterbegin', postWrapper);
+
+        // Update recent message area
+        let recentMessage = document.getElementById('recent-message');
+        recentMessage.innerHTML = `
+            <div class="recent-post">
+                <strong>Posted just now by ${message.sender}</strong>
+                <p>${message.body}</p>
+            </div>
+        `;
+    };
+</script>
+
+<!-- CSS Styling -->
+<style>
+    .chat-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+    .chat-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .chat-window {
+        height: 300px;
+        overflow-y: scroll;
+        border: 1px solid #ddd;
+        padding: 10px;
+        background-color: #fff;
+        margin-bottom: 20px;
+    }
+    .message-area {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .post-wrapper {
+        margin-bottom: 15px;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    .recent-message {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #e9f7ef;
+    }
+    .recent-message p {
+        margin: 5px 0;
+    }
+    .chat-form {
+        display: flex;
+        width: 100%;
+    }
+    .chat-form input {
+        flex: 1; /* Take up all available space */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px 0 0 5px;
+    }
+    .send-button {
+        width: 100px;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+    }
+    .send-button:hover {
+        background-color: #45a049;
+    }
+</style>
+
+{% endblock %}

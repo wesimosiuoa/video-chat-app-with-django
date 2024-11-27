@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Discussion</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    .navbar {
+      background-color: #007bff;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 1.25rem 1rem;
+    }
+    .navbar-brand {
+      color: white;
+      font-weight: bold;
+      font-size: 1.75rem;
+      letter-spacing: 1px;
+    }
+    .navbar-nav .nav-link {
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+    }
+    .navbar-nav .nav-link:hover {
+      color: #e0e5e9;
+    }
+    .btn-signout {
+      background-color: #dc3545;
+      color: white;
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.25rem;
+      font-weight: 500;
+    }
+    .btn-signout:hover {
+      background-color: #c82333;
+    }
+    .navbar-collapse {
+      justify-content: flex-end;
+    }
+    .shadow-sm {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .username-wrapper {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+    /* Style for the language selection dropdown */
+    .language-select {
+      background-color: white;
+      border: 1px solid #ced4da;
+      border-radius: 0.25rem;
+      padding: 0.375rem 0.75rem;
+      margin-left: 15px;
+    }
+    .language-select:hover {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+    }
+    .dropdown-item i {
+      margin-right: 10px; /* Space between icon and text */
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top">
+  <div class="container-fluid">
+    <!-- Brand / Logo -->
+    <a class="navbar-brand" href="{% url 'home' %}">
+      <i class="fas fa-graduation-cap"></i> Group Chat Portal
+    </a>
+    <!-- Toggler for mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Navbar Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">
+            <i class="fas fa-home"></i> Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'discussion' %}">
+            <i class="fas fa-comments"></i> Disc 
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'index' %}">
+            <i class="fas fa-video"></i> Live
+          </a>
+        </li>
+        
+        <!-- Notification Icon -->
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'notifications' %}">
+            <i class="fas fa-bell"></i> Messages <sup> {{ notification_count }} </sup>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="fas fa-user"></i> {{ request.session.username }}
+          </a>
+        </li>
+
+        <!-- Sign Out Button -->
+        <li class="nav-item">
+          <a href="{% url 'logout_view' %}" class="btn btn-signout">
+            <i class="fas fa-sign-out-alt"></i> Sign Out
+          </a>
+        </li>
+      </ul>
+
+      <!-- Language Selection Form -->
+      <div class="dropdown d-inline-block">
+        <button class="btn dropdown-toggle language-select" type="button" id="languageDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-globe"></i> Language
+        </button>
+        <div class="dropdown-menu" aria-labelledby="languageDropdown">
+          <form method="post" action="{% url 'set_language'%}" class="px-3">
+            {% csrf_token %}
+            
+            <button class="dropdown-item" type="submit" name="language" value="st">
+              <i class="fas fa-language"></i> Southern Sotho
+            </button>
+            <button class="dropdown-item" type="submit" name="language" value="af">
+              <i class="fas fa-language"></i> Afrikaans
+            </button>
+            <!-- Add other languages as needed -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<br><br><br>
+
+{% block content %}
+{% endblock content %}
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: st\n"
+
+msgid "Hello"
+msgstr "Lumelang"
+
+msgid "Goodbye"
+msgstr "Tsamaea hantle"
+
+msgid "Welcome"
+msgstr "Amodi"
+
+msgid "Username"
+msgstr "Lebitso la mosebedisi"
+
+msgid "Password"
+msgstr "Phethahatso"
+
+msgid "Login"
+msgstr "Kenya"
+
+msgid "Logout"
+msgstr "Phetha"

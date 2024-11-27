@@ -1,0 +1,79 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    #controls-wrapper {
+    display: flex; /* Use flexbox to arrange icons in a row */
+    justify-content: center; /* Center the icons horizontally */
+    align-items: center; /* Center the icons vertically */
+    padding: 20px; /* Add some padding around the section */
+    background-color: #f8f9fa; /* Light background color */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+}
+#controls-wrapper {
+    position: fixed; /* Fix the icons on the screen */
+    bottom: 10px; /* Position it at the bottom */
+    right: 10px; /* Align to the left */
+    display: block; /* Ensure block display */
+    z-index: 9999; /* Make sure it stays on top of other elements */
+}
+
+.icon-wrapper {
+    margin-bottom: 50px; /* Space between each icon */
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+.icon-wrapper {
+    margin: 0 15px; /* Add margin between icons */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: transform 0.3s; /* Smooth transform effect on hover */
+}
+
+.icon-wrapper i {
+    font-size: 24px; /* Icon size */
+    color: #000; /* Default icon color */
+}
+
+/* Hover effects */
+.icon-wrapper:hover {
+    transform: scale(1.2); /* Slightly increase icon size on hover */
+}
+
+.icon-wrapper:hover i {
+    color: #dc3545; /* Change icon color on hover */
+}
+
+</style>
+<main class="container mt-4">
+    <!-- Room Name Section -->
+    <section id="room-name-wrapper" class="mb-3 text-center">
+        <p class="lead">Room Name: <span id="room-name" class="fw-bold text-primary"></span></p>
+    </section>
+
+    <!-- Video Stream Section -->
+    <section id="video-streams" class="row justify-content-center">
+        <!-- Video Container -->
+        
+    </section>
+
+    <section id="controls-wrapper">
+        <div class="icon-wrapper">
+            <i class="fas fa-microphone" id="mic-btn"></i>
+        </div>
+        <div class="icon-wrapper">
+            <i class="fas fa-camera" id="camera-btn"></i>
+        </div>
+        <div class="icon-wrapper">
+            <i class="fas fa-sign-out-alt" id="leave-btn"></i>
+        </div>
+    </section>
+</main>
+<script type="text/javascript" src = "{% static 'assets/AgoraRTC_N-4.22.1.js' %}">
+
+</script>
+<script type="text/javascript" src = "{% static 'js/streams.js' %}" >
+
+</script>
+{% endblock content %}
